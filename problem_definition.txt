@@ -1,0 +1,53 @@
+As per our yesterday's telephonic round, I am providing you the task for round 2. Please find below task for you. 
+
+Task Details
+1) Create a Nodejs Server. 
+2) Keep the below json file in a folder "config"
+
+3) Need two routes in Nodejs Server. (i) for getting this configuration file (ii) 
+for printing the "pathatserver" & the "ip" parameter of the json whenever a user 
+will click on the button "Execute" for any server
+
+4) Use angular to create a UI to show this json in a nice format
+  (you have full freedom to design the screen). Basically the UI must show
+  all the server groups along with all the servers within that group. 
+  Each server within a servergroup will have a button "Execute". 
+  On click of this button a function in the above created nodejs server 
+  must be called and it should print in console the 
+  ip address of the server,
+  server group name 
+  and 
+  the pathatserver (defined in the json) parameter.
+
+JSON to be used for this task
+
+{
+  "servergroups": [
+    {
+      "groupname": "Server Group 1",
+      "serverport": "8000",
+      "pathatserver": "/api/monitor1",
+      "servers": [
+        {
+          "ip": "192.168.12.23"
+        },
+        {
+          "ip": "68.23.124.225"
+        }
+      ]
+    },
+    {
+      "groupname": "Server Group 2",
+      "serverport": "9000",
+      "pathatserver": "/api/monitor2",
+      "servers": [
+        {
+          "ip": "192.168.12.24"
+        },
+        {
+          "ip": "68.23.124.226"
+        }
+      ]
+    }
+  ]
+}

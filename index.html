@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Configuration Management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="/assets/angular/angular.js"></script>
+    <link rel="shortcut icon" type="image/png" href="assets\images\favicon-16x16.png" />
+</head>
+
+<body ng-app="configApp">
+    <div class="all-wrapper">
+        <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <div class="row">
+                            <div class="col-2">
+                                <a class="navbar-brand" href=".">
+                                    <img src="assets\images\favicon-16x16.png" alt="Configuration Management">
+                                </a>
+                            </div>
+                            <div class="col-10">
+                                <h1 style="color:powderblue;">Configuration Management System</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container mt-30">
+            <div class="tab-content">
+                <div id="allConfig" class="tab-pane fade in active show" ng-controller="GetAllConfigController">
+                    <div ng-repeat="conf in config">
+                        <br>
+                        <div class="card text-left">
+                            <div class="card-header">
+                                <h5>{{ conf.groupname }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Port : {{ conf.serverport }}</p>
+                                <hr>
+                                <p class="card-text">Path server : {{ conf.pathatserver }}</p>
+                                <hr>
+                                <div ng-repeat="server in conf.servers">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p>Server IP : {{server.ip}}</p>
+                                            <hr>
+                                        </div>
+                                        <div class="col-8 button-div">
+                                            <button type="submit" ng-click="executeIP(server.ip)"
+                                                class="btn btn-primary">Execute</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card text-left">
+                        <div class="card-header bg-dark text-white">
+                            <h5>Console</h5>
+                        </div>
+                        <div ng-if="executeResult" class="card-body bg-secondary text-white">
+                            <p class="card-text">Executing.....</p>
+                            <p class="card-text">Group Name : {{ executeResult.groupname }}</p>
+                            <p class="card-text">Server IP : {{ selectedIP }}</p>
+                            <p class="card-text">Port : {{ executeResult.serverport }}</p>
+                            <p class="card-text">Path server : {{ executeResult.pathatserver }}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('configApp', []);
+
+        app.controller('GetAllConfigController', function ($scope, $http) {
+            $scope.author = 'Dgupta';
+
+            $http.get('http://localhost:3000/config', { cache: false })
+                .then(function (res) {
+                    $scope.config = res.data.servergroups;
+                });
+
+            $scope.executeIP = function (ip) {
+                alert("Execution is in progress. Please Check the console at the bottom of this page for status.");
+                $scope.selectedIP = ip;
+                $http.get('http://localhost:3000/getconfig?ip=' + ip, { cache: false })
+                    .then(function (res) {
+                        $scope.executeResult = res.data;
+                    });
+            }
+        });
+    </script>
+</body>
+
+</html>
